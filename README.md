@@ -44,4 +44,4 @@ Berdasarkan temuan data dan *query* SQL, berikut adalah rekomendasi strategis un
 * Klik **Close & Apply**.
 
 ---
-*Created by [Faiz-Aturr] - Let's connect on [LinkedIn](TBA)!*
+*Created by [Faiz-Aturr] - Let's connect on [LinkedIn](www.linkedin.com/in/m-faiz-aturahman-696476421)!*
