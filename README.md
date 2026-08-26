@@ -12,7 +12,7 @@ Proyek ini tidak hanya menganalisis data, tetapi juga membangun *pipeline* datan
 
 ## 🛠️ Tech Stack
 * **Language:** Python, SQL
-* **Database:** PostgreSQL
+* **Database:** MySQL
 * **Visualization:** Power BI
 * **Libraries:** Pandas, NumPy, Faker
 
