@@ -1,6 +1,22 @@
+"""
+Synthetic NVIDIA GPU Sales Data Generator
+
+Original source:
+Nvidia GPU Sales Data 2026 (Synthetic)
+Author: Udit Jain
+Source: https://www.kaggle.com/datasets/uditjain13/nvidia-gpu-sales-synthetic-2026
+License: CC0 1.0 Public Domain
+
+The original generation script is included for reproducibility.
+Modification in this repository:
+- Adjusted the output path to match the project folder structure.
+"""
+
+
 import numpy as np
 import pandas as pd
 from datetime import date, timedelta
+from pathlib import Path
 
 rng = np.random.default_rng(42)
 N = 7000
@@ -124,7 +140,12 @@ for i in range(N):
 
 df = pd.DataFrame(rows).sort_values("sale_date").reset_index(drop=True)
 df["sale_id"] = range(1, len(df) + 1)
-df.to_csv("nvidia_gpu_sales_synthetic_2026_RAW.csv", index=False)
+OUTPUT_PATH = Path("data/raw/nvidia_gpu_sales_synthetic_2026_RAW.csv")
+OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+df.to_csv(OUTPUT_PATH, index=False)
+
+print(f"Dataset saved to: {OUTPUT_PATH}")
 print(df.shape)
 print(df.head(3).to_string())
 print(df["gpu_family"].value_counts())

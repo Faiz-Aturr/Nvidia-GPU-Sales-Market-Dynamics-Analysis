@@ -1,10 +1,10 @@
 # NVIDIA GPU Sales & Market Dynamics Analysis
 
-An end-to-end data analytics portfolio project analyzing synthetic NVIDIA GPU sales data using **Python, SQL, and Power BI**.
+An end-to-end data analytics portfolio project analyzing synthetic NVIDIA GPU sales data using **Python, MySQL, and Power BI**.
 
 The project explores sales performance, product mix, regional revenue, pricing premiums, customer satisfaction, market availability, customer segments, sales channels, bundle add-ons, and temporal trends.
 
-> **Disclaimer:** This project uses synthetic data generated for portfolio and analytical practice. The results describe patterns within the simulated dataset and do not represent actual NVIDIA sales performance.
+> **Disclaimer:** This project uses synthetic data for portfolio and analytical practice. The findings describe patterns within the simulated dataset and do not represent actual NVIDIA sales performance.
 
 ---
 
@@ -22,9 +22,21 @@ The dataset contains **7,000 simulated GPU sales transactions** covering Consume
 
 The analytical workflow follows an end-to-end process:
 
-**Synthetic Data Generation → Data Quality Assessment → Data Cleaning → Feature Engineering → Exploratory Data Analysis → SQL Analysis → Power BI Dashboard**
+**Synthetic Data Source & Ingestion → Data Quality Assessment → Data Cleaning → Feature Engineering → Exploratory Data Analysis → SQL Analysis → Power BI Dashboard**
 
-The project was designed to demonstrate practical data analytics skills, from preparing raw data to communicating business insights through an interactive dashboard.
+The project is designed to demonstrate practical data analytics skills, from preparing raw data to communicating business insights through an interactive dashboard.
+
+---
+
+## Data Source
+
+The raw synthetic dataset and generation script were sourced from **Nvidia GPU Sales Data 2026 (Synthetic)** by **Udit Jain** on Kaggle.
+
+The dataset is released under the **CC0 1.0 Public Domain** license. The original generation script is included in this repository for reproducibility and further experimentation.
+
+The script in `scripts/generate_synthetic_data.py` has been slightly adapted to align its output path with this repository's folder structure.
+
+**Source:** [Kaggle – Nvidia GPU Sales Data 2026 (Synthetic)](https://www.kaggle.com/datasets/uditjain13/nvidia-gpu-sales-synthetic-2026)
 
 ---
 
@@ -32,11 +44,11 @@ The project was designed to demonstrate practical data analytics skills, from pr
 
 | Area | Tools |
 |---|---|
-| Data Generation | Python |
-| Data Cleaning & EDA | Python, Pandas, NumPy |
+| Synthetic Data Source | Kaggle (CC0) |
+| Data Processing & EDA | Python, Pandas, NumPy |
 | Visualization | Matplotlib, Power BI |
 | SQL Analysis | MySQL, MySQL Workbench |
-| Notebook Environment | Google Colab |
+| Notebook Environment | VS Code, Jupyter, Google Colab |
 | Version Control | Git, GitHub |
 
 ---
@@ -48,6 +60,7 @@ Nvidia-GPU-Sales-Market-Dynamics-Analysis/
 │
 ├── README.md
 ├── .gitignore
+├── LICENSE
 ├── requirements.txt
 │
 ├── dashboard/
@@ -78,10 +91,10 @@ Nvidia-GPU-Sales-Market-Dynamics-Analysis/
 
 | Folder | Purpose |
 |---|---|
-| `data/raw/` | Original synthetic dataset generated for the project |
-| `data/processed/` | Cleaned and analysis-ready datasets |
+| `data/raw/` | Original synthetic dataset sourced from Kaggle |
+| `data/processed/` | Cleaned and analysis-ready datasets produced by the Python workflow |
 | `notebooks/` | Python data cleaning, feature engineering, EDA, and business analysis |
-| `scripts/` | Synthetic dataset generation script |
+| `scripts/` | Source data-generation script, adapted for repository reproducibility |
 | `sql/` | MySQL business analysis queries |
 | `dashboard/` | Interactive Power BI dashboard |
 | `images/` | Dashboard screenshots used in project documentation |
@@ -118,7 +131,7 @@ Main variables include:
 
 ## Data Preparation
 
-The Python notebook performs data quality assessment before analysis.
+The Python notebook performs data quality assessment, cleaning, validation, and feature engineering before exploratory and downstream analysis.
 
 The workflow includes:
 
@@ -158,15 +171,15 @@ Additional analytical variables were created to support deeper analysis.
 
 ### Scalping Status
 
-Transactions were grouped based on their price premium above MSRP.
+Transactions were categorized based on their price premium above MSRP.
 
-| Category | Premium Range |
-|---|---:|
-| Normal MSRP | 0% – 5% |
-| Slight Premium | >5% – 20% |
-| Heavy Scalping | >20% |
+| Category | Rule |
+|---|---|
+| Normal MSRP | Premium ≤ 5% |
+| Slight Premium | Premium > 5% and ≤ 20% |
+| Heavy Scalping | Premium > 20% |
 
-The resulting distribution was:
+Distribution:
 
 | Scalping Status | Transactions |
 |---|---:|
@@ -176,64 +189,79 @@ The resulting distribution was:
 
 ### Sale Month
 
-A monthly time variable was derived from `sale_date` to analyze changes in transaction volume and revenue over time.
+A monthly period feature was derived from `sale_date` to support temporal sales analysis.
 
 ### High Premium Flag
 
-Transactions with:
-
-```text
-price_premium_pct > 50
-```
-
-were classified as high-premium transactions for additional market analysis.
+Transactions with a price premium greater than **50%** were flagged for high-premium analysis.
 
 ---
 
-## Overall Business Metrics
+## Final Processed Datasets
+
+The Python workflow produces two processed datasets for different analytical purposes.
+
+### Analysis-Ready Dataset
+
+```text
+data/processed/nvidia_gpu_sales_analysis_ready.csv
+```
+
+Contains:
+
+- **7,000 rows**
+- **20 columns**
+- All 17 original variables
+- `scalping_status`
+- `sale_month`
+- `high_premium_flag`
+
+### SQL-Ready Dataset
+
+```text
+data/processed/nvidia_gpu_sales_sql_ready.csv
+```
+
+Contains:
+
+- **7,000 rows**
+- **18 columns**
+- The original dataset fields
+- `scalping_status`
+
+The `sale_month` and `high_premium_flag` variables remain analysis-specific features and are not included in the SQL-ready export.
+
+---
+
+## Business Performance Overview
 
 | Metric | Result |
 |---|---:|
 | Total Transactions | 7,000 |
 | Total Units Sold | 151,719 |
 | Total Revenue | $396.06M |
-| Average Revenue per Transaction | $56.58K |
+| Average Revenue per Transaction | $56,580.06 |
 | Average Price Premium | 15.01% |
-| Average Customer Satisfaction | 4.43 / 5 |
+| Average Customer Satisfaction | 4.43 |
 
 ---
 
 ## Key Findings
 
-### Consumer Gaming Drives Volume, Data Center AI Drives Revenue
+### GPU Family Performance
 
-Consumer Gaming accounted for approximately **144K units sold**, significantly higher than Data Center AI.
+Consumer Gaming dominates unit volume, while Data Center AI generates substantially higher revenue.
 
-However, Data Center AI generated approximately **$233.11M in total revenue**, compared with approximately **$162.95M from Consumer Gaming**.
+| GPU Family | Transactions | Units Sold | Revenue |
+|---|---:|---:|---:|
+| Data Center AI | 1,077 | 7,027 | $233.11M |
+| Consumer Gaming | 5,923 | 144,692 | $162.95M |
 
-This reflects the much higher transaction values associated with enterprise-oriented GPU products.
-
----
-
-### North America Generated the Highest Regional Revenue
-
-North America was the largest regional revenue contributor.
-
-| Region | Revenue |
-|---|---:|
-| North America | $121.37M |
-| Europe | $91.11M |
-| Asia-Pacific (ex-China) | $88.67M |
-| China | $64.61M |
-| Rest of World | $30.31M |
-
-North America accounted for approximately **30.6% of total simulated revenue**.
+Although Consumer Gaming represents the majority of product volume, Data Center AI produces greater total revenue because enterprise accelerators have substantially higher selling prices.
 
 ---
 
-### RTX 5070 Recorded the Highest Unit Sales
-
-The highest-selling GPU models by total units sold were:
+### Top GPU Models by Units Sold
 
 | GPU Model | Units Sold |
 |---|---:|
@@ -243,131 +271,139 @@ The highest-selling GPU models by total units sold were:
 | RTX 5080 | 20,419 |
 | RTX 4080 Super | 16,672 |
 
-High sales volume did not necessarily translate into the highest revenue because GPU prices differ substantially across product families.
+Consumer gaming GPUs dominate unit volume.
 
 ---
 
-### Revenue Leadership Differs From Unit-Sales Leadership
+### Top GPU Models by Revenue
 
-Enterprise GPU models generated significantly more revenue despite much lower unit volumes.
+Data Center AI accelerators lead revenue contribution.
 
-The highest-revenue GPU models included products such as **B200, H200, and H100 SXM**, demonstrating the impact of high-value Data Center AI products on overall revenue.
+| GPU Model | Approx. Revenue |
+|---|---:|
+| B200 | $95.93M |
+| H200 | $65.76M |
+| H100 SXM | $46.08M |
+| RTX 5090 | $31.86M |
+| RTX 4090 | $25.55M |
+
+This illustrates the difference between **volume-driven products** and **high-value enterprise products**.
 
 ---
 
-### Higher Price Premiums Are Associated With Lower Customer Satisfaction
+## Pricing Premium vs Customer Satisfaction
 
-The correlation between price premium and customer satisfaction was approximately:
+The Pearson correlation between price premium and customer satisfaction is approximately:
 
 ```text
-r = -0.67
+-0.67
 ```
 
-Average customer satisfaction declined across higher premium categories.
+This indicates a strong negative association within the simulated dataset: transactions with larger price premiums tend to have lower customer satisfaction scores.
 
-| Scalping Status | Avg Premium | Avg CSAT |
+> This relationship should be interpreted as an association within the synthetic dataset and not as evidence of causality.
+
+Average satisfaction by scalping category:
+
+| Scalping Status | Avg. Premium | Avg. Satisfaction |
 |---|---:|---:|
 | Normal MSRP | 2.48% | 4.76 |
 | Slight Premium | 10.66% | 4.57 |
 | Heavy Scalping | 34.14% | 3.88 |
 
-This represents a strong negative association within the synthetic dataset.
+---
 
-The result should be interpreted as an **association rather than evidence of causality**.
+## Customer Segment Analysis
+
+| Customer Segment | Transactions | Units Sold | Revenue |
+|---|---:|---:|---:|
+| Gaming | 4,762 | 116,599 | $130.31M |
+| Content Creation | 1,161 | 28,093 | $32.64M |
+| Hyperscale Datacenter | 584 | 3,834 | $127.61M |
+| AI Research / Startup | 314 | 1,961 | $61.52M |
+| Crypto Mining | 179 | 1,232 | $43.98M |
+
+Gaming represents the largest transaction and unit volume, while enterprise-oriented customer segments generate much higher revenue per transaction.
 
 ---
 
-### Enterprise Segments Generate Higher Transaction Values
+## Sales Channel Analysis
 
-Enterprise-oriented customer segments recorded substantially higher average revenue per transaction.
+| Sales Channel | Transactions | Units Sold | Revenue |
+|---|---:|---:|---:|
+| Retail / Etail | 4,459 | 108,131 | $121.60M |
+| Cloud Provider | 530 | 3,520 | $112.40M |
+| Direct Enterprise | 370 | 2,426 | $83.95M |
+| System Integrator / OEM | 1,641 | 37,642 | $78.11M |
 
-| Customer Segment | Avg Revenue / Transaction |
+Retail / Etail primarily supports Consumer Gaming sales, while Cloud Providers and Direct Enterprise channels are strongly associated with Data Center AI products.
+
+---
+
+## Temporal Analysis
+
+The dataset covers approximately **30 months**, from January 2024 through June 2026.
+
+Revenue generally increases over time, with several of the highest-revenue months occurring during 2025–2026.
+
+Top monthly revenue periods include:
+
+| Month | Revenue |
 |---|---:|
-| Crypto Mining | $245.71K |
-| Hyperscale Datacenter | $218.51K |
-| AI Research/Startup | $195.91K |
-| Content Creation | $28.11K |
-| Gaming | $27.37K |
+| 2026-03 | $28.33M |
+| 2025-10 | $28.19M |
+| 2026-01 | $28.14M |
+| 2025-11 | $25.17M |
+| 2026-05 | $24.58M |
 
-This difference is strongly influenced by the higher-priced Data Center AI product mix.
-
----
-
-### Sales Channels Follow Different Revenue Models
-
-Retail/Etail generated the largest number of transactions, while enterprise-oriented channels generated much larger transaction values.
-
-Average revenue per transaction was approximately:
-
-| Sales Channel | Avg Revenue / Transaction |
-|---|---:|
-| Direct Enterprise | $226.89K |
-| Cloud Provider | $212.08K |
-| System Integrator/OEM | $47.60K |
-| Retail/Etail | $27.27K |
-
-This illustrates why channel performance should be evaluated using both transaction volume and transaction value.
+The analysis suggests that overall revenue growth is driven primarily by increasing transaction and unit volume rather than a sustained increase in average transaction value.
 
 ---
 
-### Bundle Performance Is Heavily Influenced by Product Mix
+## Bundle Analysis
 
-Support Contract and NVLink Cluster Install transactions recorded the highest average revenue per transaction.
+Bundle categories show substantial differences in average transaction revenue.
 
-| Bundle Add-on | Avg Revenue / Transaction |
-|---|---:|
-| Support Contract | $210.06K |
-| NVLink Cluster Install | $199.41K |
-| Standalone | $55.52K |
-| Cooling Kit | $29.19K |
-| Extended Warranty | $27.08K |
-| Software Bundle | $26.75K |
+However, these differences should not automatically be interpreted as the causal effect of the bundle itself because bundle categories are strongly associated with different product families.
 
-However, Support Contract and NVLink Cluster Install are primarily associated with Data Center AI products.
+For example:
 
-Therefore, their higher transaction values should not be interpreted as evidence that the add-ons themselves cause higher spending.
+- `Support Contract` transactions are associated with Data Center AI products.
+- `NVLink Cluster Install` transactions are associated with Data Center AI products.
+- `Cooling Kit`, `Extended Warranty`, and `Software Bundle` transactions are primarily associated with Consumer Gaming products.
+- `Standalone` transactions contain both product families.
+
+Therefore, bundle revenue differences primarily reflect **product mix and customer segment composition**.
 
 ---
 
-### High-Premium Transactions Are Rare but Economically Significant
+## High Premium Transactions
 
-Transactions with price premiums above 50% represented:
+Transactions with a price premium greater than **50%** were analyzed separately.
 
-| Metric | Result |
-|---|---:|
-| High-Premium Transactions | 259 |
-| Transaction Share | 3.70% |
-| Revenue | $27.51M |
-| Revenue Share | 6.94% |
-| Avg Revenue / Transaction | $106.20K |
-| Avg Premium | 58.68% |
-| Avg Customer Satisfaction | 3.13 |
+| Metric | Regular Premium | High Premium |
+|---|---:|---:|
+| Transactions | 6,741 | 259 |
+| Units Sold | 146,099 | 5,620 |
+| Revenue | $368.56M | $27.51M |
+| Avg. Revenue / Transaction | $54,673.69 | $106,197.38 |
+| Avg. Premium | 13.33% | 58.68% |
+| Avg. Customer Satisfaction | 4.48 | 3.13 |
 
-Approximately **96.91%** of high-premium transactions occurred when products were classified as **Sold Out**.
+High-premium transactions represent approximately:
 
-This suggests that extreme premiums were heavily concentrated in constrained-availability conditions within the simulated market.
+- **3.70% of transactions**
+- **6.94% of total revenue**
 
----
-
-### Monthly Revenue Increased Substantially Over Time
-
-The dataset covers approximately **30 months**, from early 2024 through mid-2026.
-
-Monthly revenue increased substantially throughout the observed period and reached approximately **$28.3M at its highest point**.
-
-Average revenue per transaction did not show a comparable sustained increase during much of 2025–2026.
-
-This indicates that growth in total revenue was primarily associated with increased transaction volume rather than continuously increasing transaction value.
+Most high-premium transactions are associated with products categorized as **Sold Out**, highlighting the relationship between simulated scarcity and pricing premiums.
 
 ---
 
 ## Power BI Dashboard
 
-The interactive Power BI dashboard summarizes the main findings of the project.
+The dashboard provides an interactive executive overview of the dataset.
 
-### KPI Cards
-
-The dashboard displays:
+Key KPI cards include:
 
 - Total Revenue
 - Total Units Sold
@@ -375,9 +411,7 @@ The dashboard displays:
 - Average Price Premium
 - Average Customer Satisfaction
 
-### Main Visualizations
-
-The dashboard includes:
+Main visualizations include:
 
 - Revenue by Region
 - Monthly Revenue Trend
@@ -385,35 +419,39 @@ The dashboard includes:
 - Revenue by GPU Family
 - Average Customer Satisfaction by Scalping Status
 
-### Interactive Filters
-
-Users can filter the dashboard by:
+Interactive slicers allow filtering by:
 
 - Year
 - Month
 
-Selected charts also support cross-filtering to explore specific subsets of the simulated market.
+The dashboard file is available at:
+
+```text
+dashboard/nvidia_gpu_sales_dashboard.pbix
+```
 
 ---
 
 ## SQL Analysis
 
-The SQL analysis complements the Python EDA by answering structured business questions directly from the processed dataset.
+The SQL component uses **MySQL** to reproduce and extend several analytical questions using the SQL-ready dataset.
 
-Topics include:
+The SQL script includes analyses related to:
 
-1. Overall GPU family performance
-2. GPU model performance
-3. Regional revenue
-4. Scalping behavior
-5. Stock availability
-6. Customer segmentation
-7. Sales channels
-8. Bundle add-ons
-9. Customer satisfaction
-10. High-premium transactions
+- Overall business performance
+- GPU family performance
+- GPU model performance
+- Regional revenue
+- Customer segments
+- Sales channels
+- Pricing premiums
+- Scalping categories
+- Customer satisfaction
+- Stock availability
+- Bundle performance
+- Monthly trends
 
-The SQL queries are available in:
+SQL file:
 
 ```text
 sql/nvidia_gpu_sales_analysis.sql
@@ -429,7 +467,7 @@ sql/nvidia_gpu_sales_analysis.sql
 data/raw/nvidia_gpu_sales_synthetic_2026_RAW.csv
 ```
 
-Contains the original synthetic dataset generated for the project.
+The original synthetic dataset sourced from Kaggle.
 
 ### Analysis-Ready Dataset
 
@@ -437,7 +475,7 @@ Contains the original synthetic dataset generated for the project.
 data/processed/nvidia_gpu_sales_analysis_ready.csv
 ```
 
-Contains the cleaned dataset and engineered analytical features used for further exploration.
+Contains the cleaned dataset and all engineered analytical features used in the Python analysis.
 
 ### SQL-Ready Dataset
 
@@ -451,15 +489,61 @@ Contains the processed version prepared for import and analysis in MySQL.
 
 ## Reproducibility
 
-### Generate the Synthetic Dataset
+### 1. Clone the Repository
 
-Run:
+```bash
+git clone https://github.com/Faiz-Aturr/Nvidia-GPU-Sales-Market-Dynamics-Analysis.git
+cd Nvidia-GPU-Sales-Market-Dynamics-Analysis
+```
+
+### 2. Create a Python Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+On Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 3. Install Python Dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Required packages include:
+
+```text
+pandas
+numpy
+matplotlib
+ipykernel
+```
+
+### 4. Synthetic Dataset Generation (Optional)
+
+The raw synthetic dataset is already included in:
+
+```text
+data/raw/nvidia_gpu_sales_synthetic_2026_RAW.csv
+```
+
+To regenerate the dataset using the adapted Kaggle generation script:
 
 ```bash
 python scripts/generate_synthetic_data.py
 ```
 
-### Run the Python Analysis
+The generated file will be written directly to:
+
+```text
+data/raw/nvidia_gpu_sales_synthetic_2026_RAW.csv
+```
+
+### 5. Run the Python Analysis
 
 Open:
 
@@ -467,9 +551,24 @@ Open:
 notebooks/nvidia_gpu_sales_analysis.ipynb
 ```
 
-The notebook was developed using **Google Colab**.
+The notebook can be executed locally using **VS Code + Jupyter** with the project's `.venv` environment.
 
-### Run the SQL Analysis
+It was originally developed using Google Colab and remains compatible with notebook-based workflows.
+
+The notebook automatically reads:
+
+```text
+data/raw/nvidia_gpu_sales_synthetic_2026_RAW.csv
+```
+
+and exports:
+
+```text
+data/processed/nvidia_gpu_sales_analysis_ready.csv
+data/processed/nvidia_gpu_sales_sql_ready.csv
+```
+
+### 6. Run the SQL Analysis
 
 Import the SQL-ready dataset into MySQL and execute:
 
@@ -477,7 +576,7 @@ Import the SQL-ready dataset into MySQL and execute:
 sql/nvidia_gpu_sales_analysis.sql
 ```
 
-### Open the Dashboard
+### 7. Open the Dashboard
 
 Open the following file using Power BI Desktop:
 
@@ -493,25 +592,32 @@ This project uses synthetic data and is intended to demonstrate analytical metho
 
 Several findings describe relationships between variables, including pricing premiums, stock availability, bundle categories, and customer satisfaction.
 
-These relationships should be interpreted as **associations within the simulated dataset and not causal conclusions**.
+These relationships should be interpreted as patterns within the simulated dataset rather than causal business conclusions.
+
+Differences in revenue across bundles, sales channels, and customer segments may also be influenced by underlying product mix.
 
 ---
 
 ## Skills Demonstrated
 
+This project demonstrates practical experience with:
+
 - Data cleaning and validation
-- Exploratory data analysis
+- Missing value handling
 - Feature engineering
-- Data aggregation
-- Business-oriented SQL querying
-- Time-series analysis
+- Exploratory data analysis
+- GroupBy and aggregation analysis
+- Business KPI development
+- Correlation analysis
+- Time-series aggregation
 - Customer segmentation analysis
-- Pricing analysis
-- Data visualization
+- Pricing and market premium analysis
+- MySQL querying
 - Power BI dashboard development
-- Interactive filtering
-- Business insight communication
-- Git and repository organization
+- Data visualization
+- Analytical storytelling
+- Git and GitHub project organization
+- Reproducible project structure
 
 ---
 
@@ -519,13 +625,26 @@ These relationships should be interpreted as **associations within the simulated
 
 | Component | File |
 |---|---|
-| Data Generator | `scripts/generate_synthetic_data.py` |
 | Python Analysis | `notebooks/nvidia_gpu_sales_analysis.ipynb` |
-| SQL Analysis | `sql/nvidia_gpu_sales_analysis.sql` |
+| Synthetic Data Generator | `scripts/generate_synthetic_data.py` |
+| MySQL Analysis | `sql/nvidia_gpu_sales_analysis.sql` |
 | Power BI Dashboard | `dashboard/nvidia_gpu_sales_dashboard.pbix` |
 | Dashboard Preview | `images/dashboard_overview.png` |
+| Raw Dataset | `data/raw/nvidia_gpu_sales_synthetic_2026_RAW.csv` |
+| Analysis-Ready Dataset | `data/processed/nvidia_gpu_sales_analysis_ready.csv` |
+| SQL-Ready Dataset | `data/processed/nvidia_gpu_sales_sql_ready.csv` |
 
 ---
+
+## License & Data Attribution
+
+The synthetic source dataset **Nvidia GPU Sales Data 2026 (Synthetic)** by **Udit Jain** is released under the **CC0 1.0 Public Domain** license.
+
+Original source:
+
+[Kaggle – Nvidia GPU Sales Data 2026 (Synthetic)](https://www.kaggle.com/datasets/uditjain13/nvidia-gpu-sales-synthetic-2026)
+
+The data-generation script included in this repository originates from the same Kaggle dataset and has been adapted only to align its output path with this project's repository structure.
 
 ## Author
 
