@@ -650,4 +650,4 @@ The data-generation script included in this repository originates from the same 
 
 Created as an end-to-end data analytics portfolio project using **Python, SQL, and Power BI**.
 ---
-*Created by [Faiz-Aturr] - Let's connect on [LinkedIn](https://www.linkedin.com/in/m-faiz-aturahman-696476421)!*
+*Created by [Faiz-Aturr] - Let's connect on [LinkedIn](https://www.linkedin.com/in/faizaturrahman)!*
