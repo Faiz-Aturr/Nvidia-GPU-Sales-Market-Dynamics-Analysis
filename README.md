@@ -16,6 +16,15 @@ The Power BI dashboard provides an interactive overview of sales performance wit
 
 ---
 
+## Quick Links
+
+- [Python Analysis](notebooks/nvidia_gpu_sales_analysis.ipynb)
+- [SQL Analysis](sql/nvidia_gpu_sales_analysis.sql)
+- [Power BI Dashboard](dashboard/nvidia_gpu_sales_dashboard.pbix)
+- [Processed Dataset](data/processed/nvidia_gpu_sales_analysis_ready.csv)
+
+---
+
 ## Project Overview
 
 The dataset contains **7,000 simulated GPU sales transactions** covering Consumer Gaming and Data Center AI products.
