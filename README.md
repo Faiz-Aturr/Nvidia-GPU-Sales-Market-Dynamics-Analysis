@@ -40,6 +40,8 @@ This project aims to answer the following analytical questions:
 6. How has revenue changed over time, and what factors appear to drive the trend?
 7. How do bundle categories differ in transaction value, and to what extent may these differences reflect underlying product mix?
 
+---
+
 ## Data Source
 
 The raw synthetic dataset and generation script were sourced from **Nvidia GPU Sales Data 2026 (Synthetic)** by **Udit Jain** on Kaggle.
@@ -408,6 +410,24 @@ High-premium transactions represent approximately:
 - **6.94% of total revenue**
 
 Most high-premium transactions are associated with products categorized as **Sold Out**, highlighting the relationship between simulated scarcity and pricing premiums.
+
+---
+
+## Business Recommendations
+
+Based on patterns observed in the synthetic dataset:
+
+- **Monitor high-premium transactions and product availability.** Higher pricing premiums are associated with lower customer satisfaction, particularly among Heavy Scalping transactions. Availability and pricing conditions should therefore be monitored together when identifying customer experience risks.
+
+- **Use different strategies for Consumer Gaming and Data Center AI products.** Consumer Gaming drives the majority of unit volume, while Data Center AI generates substantially higher revenue. Performance targets and commercial strategies should reflect these different roles.
+
+- **Prioritize channel strategies by product family.** Retail / Etail is strongly associated with Consumer Gaming volume, while Cloud Provider and Direct Enterprise channels contribute significantly to high-value Data Center AI sales.
+
+- **Support inventory planning with demand trends.** Revenue growth in the simulated dataset is primarily associated with increasing transaction and unit volume, suggesting that inventory and capacity planning should consider changing demand levels over time.
+
+- **Avoid evaluating bundle performance from revenue alone.** Bundle categories are associated with different GPU families and customer segments, so bundle comparisons should be evaluated within comparable product groups before drawing business conclusions.
+
+- **Track regional performance alongside product mix.** High-revenue regions should be analyzed together with the products and customer segments driving their performance to support more targeted commercial decisions.
 
 ---
 
