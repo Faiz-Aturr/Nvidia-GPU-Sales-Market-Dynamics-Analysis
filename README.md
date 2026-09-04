@@ -28,6 +28,18 @@ The project is designed to demonstrate practical data analytics skills, from pre
 
 ---
 
+## Business Questions
+
+This project aims to answer the following analytical questions:
+
+1. What are the overall sales performance metrics in terms of transactions, units sold, revenue, pricing premiums, and customer satisfaction?
+2. Which GPU families and models drive the highest sales volume and revenue?
+3. Which regions, customer segments, and sales channels contribute the most to revenue?
+4. How are pricing premiums and scalping conditions associated with customer satisfaction?
+5. How does product availability relate to high-premium transactions?
+6. How has revenue changed over time, and what factors appear to drive the trend?
+7. How do bundle categories differ in transaction value, and to what extent may these differences reflect underlying product mix?
+
 ## Data Source
 
 The raw synthetic dataset and generation script were sourced from **Nvidia GPU Sales Data 2026 (Synthetic)** by **Udit Jain** on Kaggle.
