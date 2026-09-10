@@ -63,6 +63,22 @@ The script in `scripts/generate_synthetic_data.py` has been slightly adapted to 
 
 ---
 
+## Synthetic Data Design Note
+
+The source dataset is generated through a simulation script that intentionally introduces several relationships into the data.
+
+Key design assumptions include:
+
+- Transaction dates are weighted toward later periods in the dataset.
+- Product availability influences pricing premiums, with lower availability generally producing higher simulated premiums.
+- Customer satisfaction is designed to decrease as price premiums increase, with added random noise and different sensitivity across GPU families.
+
+Because of these design choices, some observed patterns — particularly temporal growth and the negative relationship between pricing premiums and customer satisfaction — should be interpreted partly as properties of the simulation design rather than independently discovered real-world effects.
+
+The analysis therefore focuses on demonstrating analytical workflow, interpretation, and visualization rather than making empirical claims about NVIDIA's actual business performance.
+
+---
+
 ## Tools & Technologies
 
 | Area | Tools |
@@ -322,7 +338,7 @@ The Pearson correlation between price premium and customer satisfaction is appro
 -0.67
 ```
 
-This indicates a strong negative association within the simulated dataset: transactions with larger price premiums tend to have lower customer satisfaction scores.
+This reflects a strong negative association within the simulated dataset. However, the relationship is partly embedded in the source generator, where customer satisfaction is intentionally modeled to decrease as price premiums increase.
 
 > This relationship should be interpreted as an association within the synthetic dataset and not as evidence of causality.
 
