@@ -479,6 +479,8 @@ The SQL component uses **MySQL** to reproduce and extend several analytical ques
 
 The SQL script includes analyses related to:
 
+The SQL script includes analyses related to:
+
 - Overall business performance
 - GPU family performance
 - GPU model performance
@@ -490,7 +492,8 @@ The SQL script includes analyses related to:
 - Customer satisfaction
 - Stock availability
 - Bundle performance
-- Monthly trends
+
+Monthly trend analysis is handled separately in the Python workflow and Power BI dashboard.
 
 SQL file:
 
